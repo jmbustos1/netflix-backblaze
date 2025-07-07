@@ -21,7 +21,6 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
     EC2 Instance: Hosts all services in containers (frontend, backend, PostgreSQL)
 
 ## 🧠 Software Stack
-```
     Docker: Containerized deployment
 
     Golang (Gin): Backend API
@@ -33,7 +32,7 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
     Backblaze B2: Video file storage
 
     Terraform: Infrastructure provisioning
-```
+
 
 ## 🔧 Backend
 ### 🗂️ cmd/ — Entry Point
@@ -42,7 +41,7 @@ Contains the main() function, sets up routes and CORS, initializes DB + B2 clien
 ```
 make seed
 ```
-```
+```go
 // Extract from main.go
 r.GET("/movies", func(c *gin.Context) {
 	dbMovies, _ := queries.ListMovies(context.Background())
@@ -67,7 +66,7 @@ r.GET("/movies", func(c *gin.Context) {
 })
 ```
 ### 📦 internal/api/ — Serializers & DTO
-```
+```go
 type MovieResponse struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
@@ -90,14 +89,14 @@ func ConvertToMovieResponses(movies []db.Movie) []MovieResponse {
 }
 ```
 ### ☁️ internal/b2/ — Backblaze Signed URLs
-```
+```go
 func (c *Client) GetSignedURL(filename string, validFor time.Duration) (string, error) {
 	token, err := c.bucket.AuthToken(context.Background(), filename, validFor)
 	return fmt.Sprintf("%s/file/%s/%s?Authorization=%s", c.bucket.BaseURL(), c.bucket.Name(), filename, token), nil
 }
 ```
 ### 🗃️ internal/db/ — SQLC Queries
-```
+```sql
 -- name: ListMovies :many
 SELECT * FROM movies;
 
