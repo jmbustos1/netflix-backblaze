@@ -16,7 +16,7 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
     Manage infrastructure using Terraform.
 
 ## 🧱 Architecture
-![Architecture Diagram](assets/Screenshot from 2025-07-06 20-28-18.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 20-28-18.png)
 
 ## 🖥️ Hardware
 
@@ -37,8 +37,8 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
 
 
 ## 🔧 Backend
-![Architecture Diagram](assets/Screenshot from 2025-07-06 19-43-10.png)
-![Architecture Diagram](assets/Screenshot from 2025-07-06 20-20-43.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 19-43-10.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 20-20-43.png)
 
 ### 🗂️ cmd/ — Entry Point
 
@@ -94,7 +94,7 @@ func ConvertToMovieResponses(movies []db.Movie) []MovieResponse {
 }
 ```
 ### ☁️ internal/b2/ — Backblaze Signed URLs
-![Architecture Diagram](assets/Screenshot from 2025-07-06 20-21-51.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 20-21-51.png)
 ```go
 func (c *Client) GetSignedURL(filename string, validFor time.Duration) (string, error) {
 	token, err := c.bucket.AuthToken(context.Background(), filename, validFor)
@@ -115,12 +115,12 @@ VALUES ($1, $2, $3, $4, $5)
 RETURNING id, title, year, url, description, image_url, video_url, created_at;
 ```
 ## 🖼️ Frontend
-![Architecture Diagram](assets/Screenshot from 2025-07-06 20-27-12.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 20-27-12.png)
 Simple React frontend that fetches movie data and renders thumbnails.
 
 ## ✅ Results
-![Architecture Diagram](assets/Screenshot from 2025-07-06 21-51-28.png)
-![Architecture Diagram](assets/Screenshot from 2025-07-06 21-51-43.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 21-51-28.png)
+![Architecture Diagram](assets/Screenshot_from_2025-07-06 21-51-43.png)
 Once metadata is seeded and videos uploaded, the app generates signed streaming URLs:
 
 ## 🧪 Future Improvements
