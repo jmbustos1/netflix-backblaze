@@ -15,8 +15,12 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
 
     Manage infrastructure using Terraform.
 
+---
+
 ## 🧱 Architecture
 ![Architecture Diagram](assets/Screenshot_from_2025-07-06 20-28-18.png)
+
+---
 
 ## 🖥️ Hardware
 
