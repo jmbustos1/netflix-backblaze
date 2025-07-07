@@ -1,7 +1,7 @@
-🎬 Netflix-Backblaze: Monolithic B2 Video App
+ # 🎬 Netflix-Backblaze: Monolithic B2 Video App
 
 This project is a monolithic deployment of a simple Netflix-like application, built for personal experimentation and architectural prototyping.
-🎯 Goals
+## 🎯 Goals
 
     Test Backblaze B2 as a blob storage solution.
 
@@ -15,12 +15,12 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
 
     Manage infrastructure using Terraform.
 
-🧱 Architecture
-🖥️ Hardware
+## 🧱 Architecture
+## 🖥️ Hardware
 
     EC2 Instance: Hosts all services in containers (frontend, backend, PostgreSQL)
 
-🧠 Software Stack
+## 🧠 Software Stack
 ```
     Docker: Containerized deployment
 
@@ -35,8 +35,8 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
     Terraform: Infrastructure provisioning
 ```
 
-🔧 Backend
-🗂️ cmd/ — Entry Point
+## 🔧 Backend
+### 🗂️ cmd/ — Entry Point
 
 Contains the main() function, sets up routes and CORS, initializes DB + B2 client.
 ```
@@ -66,7 +66,7 @@ r.GET("/movies", func(c *gin.Context) {
 	c.JSON(http.StatusOK, all)
 })
 ```
-📦 internal/api/ — Serializers & DTO
+### 📦 internal/api/ — Serializers & DTO
 ```
 type MovieResponse struct {
 	ID          int    `json:"id"`
@@ -89,14 +89,14 @@ func ConvertToMovieResponses(movies []db.Movie) []MovieResponse {
 	return responses
 }
 ```
-☁️ internal/b2/ — Backblaze Signed URLs
+### ☁️ internal/b2/ — Backblaze Signed URLs
 ```
 func (c *Client) GetSignedURL(filename string, validFor time.Duration) (string, error) {
 	token, err := c.bucket.AuthToken(context.Background(), filename, validFor)
 	return fmt.Sprintf("%s/file/%s/%s?Authorization=%s", c.bucket.BaseURL(), c.bucket.Name(), filename, token), nil
 }
 ```
-🗃️ internal/db/ — SQLC Queries
+### 🗃️ internal/db/ — SQLC Queries
 ```
 -- name: ListMovies :many
 SELECT * FROM movies;
@@ -109,15 +109,15 @@ INSERT INTO movies (title, year, description, url, video_url)
 VALUES ($1, $2, $3, $4, $5)
 RETURNING id, title, year, url, description, image_url, video_url, created_at;
 ```
-🖼️ Frontend
+## 🖼️ Frontend
 
 Simple React frontend that fetches movie data and renders thumbnails.
 
-✅ Results
+## ✅ Results
 
 Once metadata is seeded and videos uploaded, the app generates signed streaming URLs:
 
-🧪 Future Improvements
+## 🧪 Future Improvements
 
     Authentication + access control
 
