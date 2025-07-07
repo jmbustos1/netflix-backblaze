@@ -118,14 +118,17 @@ INSERT INTO movies (title, year, description, url, video_url)
 VALUES ($1, $2, $3, $4, $5)
 RETURNING id, title, year, url, description, image_url, video_url, created_at;
 ```
+
 ## 🖼️ Frontend
 ![Architecture Diagram](assets/Screenshot_from_2025-07-06 20-27-12.png)
 Simple React frontend that fetches movie data and renders thumbnails.
+
 
 ## ✅ Results
 ![Architecture Diagram](assets/Screenshot_from_2025-07-06 21-51-28.png)
 ![Architecture Diagram](assets/Screenshot_from_2025-07-06 21-51-43.png)
 Once metadata is seeded and videos uploaded, the app generates signed streaming URLs:
+
 
 ## 🧪 Future Improvements
 
