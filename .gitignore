@@ -1,0 +1,16 @@
+# Terraform state 
+terraform.tfstate
+terraform.tfstate.backup
+
+# Variables sensibles
+terraform.tfvars
+
+# Archivos temporales
+.terraform/
+.terraform.lock.hcl
+
+my-ec2-key.pem
+terraform.tfstate*
+
+.env
+.env.local

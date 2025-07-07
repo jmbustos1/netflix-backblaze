@@ -1,0 +1,42 @@
+// ====LEVANTAR===
+// terraform apply
+// aws ec2 describe-instances --filters "Name=tag:Name,Values=ec2-cursor" --query "Reservations[*].Instances[*].InstanceId" --output text
+
+// ====Destruir===
+// aws ecr list-images --repository-name ec2-cursor --query 'imageIds[*]' --output json | jq -c '.[]' | while read img; do     aws ecr batch-delete-image --repository-name ec2-cursor --image-ids "$img"; done
+// terraform destroy
+
+// ====Clave===
+// terraform output -raw ssh_private_key > my-ec2-key.pem
+// chmod 400 my-ec2-key.pem
+
+// ====SSH===
+// ssh -i my-ec2-key.pem ubuntu@<EC2-IP>
+
+// ====probar==
+// nc -v <EC2-IP> 8100
+
+// ====revisarec2====
+// sudo cat /var/log/cloud-init-output.log
+
+
+// ====deploy====
+// ./deploy.sh
+// source .env && ./deploy.sh
+
+
+
+// ===Instrucciones===
+requisitos:
+definir un .env # .env para deployar con source .env && ./deploy.sh:
+export AWS_ACCOUNT_ID=""
+export EC2_INSTANCE_ID=""
+
+# Login en ECR (cambia <AWS_ACCOUNT_ID> y <REGION> y <REPO_NAME>)
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+
+# Descargar y ejecutar la imagen Docker del servidor TCP
+docker pull <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/<REPO_NAME>:latest
+docker run -d -p 8090:8080 <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/<REPO_NAME>:latest
+
+editar variables de terraform.

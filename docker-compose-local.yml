@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: netflix-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: netflix
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  netflix-backend-server:
+    build:
+      context: ./backend  # Ajusta esto al directorio donde tengas el Dockerfile del servidor
+      dockerfile: Dockerfile
+    container_name: netflix-golang-container
+    volumes:
+      - ./backend:/app
+      - ./db:/app/db          # ✅ Agrega esta línea para montar las migraciones
+      # - ./internal:/app/internal
+    ports:
+      - "8100:8080"  # Mapea el puerto para acceso externo
+    env_file: .env.local
+    environment:
+      DB_SOURCE: "postgres://postgres:postgres@postgres:5432/netflix?sslmode=disable"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    tty: true
+  netflix-frontend-server:
+    build:
+      context: ./frontend
+    container_name: netflix-next-container
+    ports:
+      - "3030:3000"
+    volumes:
+      - ./frontend:/app
+      # - /app/node_modules
+volumes:
+  postgres_data:
