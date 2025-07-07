@@ -21,7 +21,7 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
     EC2 Instance: Hosts all services in containers (frontend, backend, PostgreSQL)
 
 🧠 Software Stack
-
+```
     Docker: Containerized deployment
 
     Golang (Gin): Backend API
@@ -33,14 +33,16 @@ This project is a monolithic deployment of a simple Netflix-like application, bu
     Backblaze B2: Video file storage
 
     Terraform: Infrastructure provisioning
+```
 
 🔧 Backend
 🗂️ cmd/ — Entry Point
 
 Contains the main() function, sets up routes and CORS, initializes DB + B2 client.
-
+```
 make seed
-
+```
+```
 // Extract from main.go
 r.GET("/movies", func(c *gin.Context) {
 	dbMovies, _ := queries.ListMovies(context.Background())
@@ -63,9 +65,9 @@ r.GET("/movies", func(c *gin.Context) {
 	all := append(hardcoded, movies...)
 	c.JSON(http.StatusOK, all)
 })
-
+```
 📦 internal/api/ — Serializers & DTO
-
+```
 type MovieResponse struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
@@ -73,7 +75,6 @@ type MovieResponse struct {
 	Description string `json:"description,omitempty"`
 	VideoUrl    string `json:"video_url,omitempty"`
 }
-
 func ConvertToMovieResponses(movies []db.Movie) []MovieResponse {
 	var responses []MovieResponse
 	for _, m := range movies {
@@ -87,16 +88,16 @@ func ConvertToMovieResponses(movies []db.Movie) []MovieResponse {
 	}
 	return responses
 }
-
+```
 ☁️ internal/b2/ — Backblaze Signed URLs
-
+```
 func (c *Client) GetSignedURL(filename string, validFor time.Duration) (string, error) {
 	token, err := c.bucket.AuthToken(context.Background(), filename, validFor)
 	return fmt.Sprintf("%s/file/%s/%s?Authorization=%s", c.bucket.BaseURL(), c.bucket.Name(), filename, token), nil
 }
-
+```
 🗃️ internal/db/ — SQLC Queries
-
+```
 -- name: ListMovies :many
 SELECT * FROM movies;
 
@@ -107,7 +108,7 @@ SELECT * FROM movies WHERE id = $1;
 INSERT INTO movies (title, year, description, url, video_url)
 VALUES ($1, $2, $3, $4, $5)
 RETURNING id, title, year, url, description, image_url, video_url, created_at;
-
+```
 🖼️ Frontend
 
 Simple React frontend that fetches movie data and renders thumbnails.
